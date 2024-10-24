@@ -1,10 +1,10 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import Link from 'next/link'
 import { my_name } from './libs/constants'
 import Navbar from './components/ui/navbar'
 import { Suspense } from 'react'
 import Loading from './components/ui/loading'
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +28,7 @@ export default function RootLayout({
           <Suspense fallback={<Loading />}>
           <main className="flex-grow">
             {children}
+            <Analytics />
           </main>
           </Suspense>
           <footer className="bg-gray-900 text-white py-8">

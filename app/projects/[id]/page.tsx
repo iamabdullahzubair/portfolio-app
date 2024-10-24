@@ -24,7 +24,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                         src={project.projectImageUrl}
                         alt={project.projectName}
                         layout="fill"
-                        style={{ objectFit: 'cover' }}
+                        style={{ objectFit: 'contain' }}
                         className="w-full h-full rounded-t-lg" // Removed object-cover since it's now inline style
                     />
                     <div className='absolute bottom-1 right-2 flex gap-2 sm:flex-row flex-col'>
