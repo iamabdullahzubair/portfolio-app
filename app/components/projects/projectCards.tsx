@@ -21,6 +21,8 @@ const ProjectsCards = async () => {
                                 alt={project.projectName}
                                 width={300}
                                 height={200}
+                                priority={false}
+                                loading='lazy'
                                 className="w-full h-48 object-cover rounded-t-lg"
                             />
                         </CardHeader>

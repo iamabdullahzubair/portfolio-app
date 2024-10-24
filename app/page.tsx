@@ -15,6 +15,7 @@ export default function Home() {
           alt={my_name}
           width={150}
           height={150}
+          priority 
           className="rounded-full mx-auto mb-8"
         />
         <h1 className="text-5xl font-bold mb-4">Mohd Abdullah</h1>
