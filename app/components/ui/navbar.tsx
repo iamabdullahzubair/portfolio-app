@@ -32,7 +32,7 @@ const Navbar = (props: Props) => {
 
       {/* Mobile Navbar */}
       <div className="sm:hidden flex items-center justify-between px-6 py-3 bg-white">
-        <h1 className="text-2xl font-bold">Your Logo</h1>
+        <h1 className="text-2xl font-bold">Portfolio</h1>
         <button onClick={toggleMenu} className="text-3xl">
           {isOpen ? <FaTimes /> : <FaBars />}
         </button>
