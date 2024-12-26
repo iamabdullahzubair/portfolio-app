@@ -61,20 +61,21 @@ export const addProject = async (data: dataType) => {
 // Function to get all projects from Firestore
 export const getProjects = async (): Promise<projectDetailsType[]> => {
     try {
-        const querySnapshot = await getDocs(collection(db, "projects")); // Get all documents in "projects" collection
-        const projects: projectDetailsType[] = [];
-        
-        querySnapshot.forEach((doc) => {
-            const data = doc.data() as Omit<projectDetailsType, 'id'>; // Explicit type assertion for Firestore data
-            projects.push({ id: doc.id, ...data }); // Push project data into array, including the document ID
-        });
-
-        return projects;
+      const timestamp = new Date().getTime(); // Unique query parameter
+      const querySnapshot = await getDocs(collection(db, `projects?timestamp=${timestamp}`));
+      const projects: projectDetailsType[] = [];
+  
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as Omit<projectDetailsType, 'id'>;
+        projects.push({ id: doc.id, ...data });
+      });
+  
+      return projects;
     } catch (error) {
-        console.error("Error fetching projects:", error);
-        throw error;
+      console.error('Error fetching projects:', error);
+      throw error;
     }
-};
+  };
 
 // Function to get a specific project by ID
 export const getProject = async (id: string): Promise<projectDetailsType | null> => {

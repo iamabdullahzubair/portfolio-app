@@ -72,6 +72,7 @@ const AddProjectForm = () => {
             };
 
             await addProject(projectData);
+            alert("Project successfully added!")
             router.push("/dashboard")
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -85,7 +86,6 @@ const AddProjectForm = () => {
     const handleGenerateDescription = async (projectName: string, techStack: string) => {
         const desc = await generateDescriptionWithCohere(projectName, techStack)
         console.log(desc)
-
     }
 
     return (
