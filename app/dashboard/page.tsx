@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { loginWithEmail } from '../firebase/actions';
 import LoadingOverlay from '../components/ui/loadingOverlay';
 import { auth } from "@/app/firebase/firebase"
