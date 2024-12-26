@@ -1,4 +1,5 @@
-import { db, storage } from '@/app/firebase/firebase'; // Adjust the path as needed
+import { auth, db, storage } from '@/app/firebase/firebase'; // Adjust the path as needed
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -44,6 +45,10 @@ export const uploadImage = async (file: File): Promise<string> => {
 // Function to add a project to Firestore
 export const addProject = async (data: dataType) => {
     try {
+        if(auth.currentUser == null){
+            alert("You are not authorised")
+            return
+        }
         // Send the data to Firestore
         await addDoc(collection(db, "projects"), data);
         console.log("Project added successfully:", data);
@@ -89,3 +94,14 @@ export const getProject = async (id: string): Promise<projectDetailsType | null>
         throw error;
     }
 };
+
+
+export const loginWithEmail = async (email : string, password:string) => {
+    try {
+        const res = await signInWithEmailAndPassword(auth, email, password)
+        console.log(res)    
+    } catch (error) {
+        console.error("login with email error :: ", error)
+        throw error
+    }
+}

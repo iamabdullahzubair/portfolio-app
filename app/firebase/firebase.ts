@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-
+import { getAuth } from "firebase/auth";
 // Firebase configuration using environment variables
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,11 +14,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
+const auth = getAuth(app)
 // Initialize Firestore (Database)
 const db = getFirestore(app);
 
 // Initialize Storage
 const storage = getStorage(app);
 
-export { db, storage };
+export { auth, db, storage };

@@ -10,7 +10,7 @@ export default function Dashboard({ children,  }: { children: ReactNode }) {
             {/* Sidebar */}
             <aside className="w-64 bg-gray-800 text-white">
                 <div className="px-6 py-4">
-                    <h2 className="text-2xl font-bold mb-6">Portfolio Dashboard</h2>
+                    <Link href={'/dashboard'} className="text-2xl font-bold mb-10">Portfolio Dashboard</Link>
                     <Nav />
                 </div>
             </aside>

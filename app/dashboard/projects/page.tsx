@@ -14,9 +14,9 @@ const Projects = async (props: Props) => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Replace with project data */}
                 {projects.map(project =>
-                    <div className="bg-white p-4 shadow rounded-lg">
+                    <div key={project.id} className="bg-white p-4 shadow rounded-lg">
                         <h3 className="text-xl font-semibold">{project.projectName}</h3>
-                        <p className="text-gray-600">{project.description}</p>
+                        {/* <p className="text-gray-600">{project.description}</p> */}
                     </div>
                 )}
             </div>
