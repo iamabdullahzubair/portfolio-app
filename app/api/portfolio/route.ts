@@ -4,8 +4,10 @@ import { PortfolioData } from '@/lib/types';
 
 export async function GET() {
   try {
-    const data = await getPortfolioData();
-    const status = await getDbStatus();
+    const [data, status] = await Promise.all([
+      getPortfolioData(),
+      getDbStatus(),
+    ]);
 
     return NextResponse.json({
       success: true,
