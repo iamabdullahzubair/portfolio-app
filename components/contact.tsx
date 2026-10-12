@@ -1,96 +1,134 @@
 'use client';
 
-import { Mail, Linkedin, Github } from 'lucide-react';
-import { portfolioConfig } from '@/lib/portfolio-config';
+import { Mail, Linkedin, Github, Copy, Check, MessageSquare } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { usePortfolio } from '@/lib/portfolio-context';
 
 export default function Contact() {
-  const { email, links } = portfolioConfig.contact;
-  return (
-    <section id="contact" className="py-20 px-6 bg-background">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 flex items-center gap-4">
-          <span className="w-12 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></span>
-          Get In Touch
-        </h2>
+  const portfolio = usePortfolio();
+  const { email, links, quickFacts, description } = portfolio.contact;
+  const [copied, setCopied] = useState(false);
 
-        <div className="grid md:grid-cols-2 gap-12">
+  const copyEmail = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    toast.success('Email copied to clipboard!');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const linkedInLink = links.find((l) => l.label.toLowerCase().includes('linkedin'))?.url || '#';
+  const githubLink = links.find((l) => l.label.toLowerCase().includes('github'))?.url || '#';
+
+  return (
+    <section id="contact" className="py-24 px-6 bg-background relative overflow-hidden">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-secondary border border-border/80 text-muted-foreground mb-4">
+            <MessageSquare className="w-3.5 h-3.5 text-primary" />
+            Get In Touch
+          </div>
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground">
+            Let&apos;s Connect
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10">
           <div>
-            <p className="text-xl text-foreground/80 mb-8 leading-relaxed">
-              I&apos;m always interested in hearing about new projects and exciting opportunities. Whether you want to collaborate or
-              just say hello, feel free to reach out!
+            <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed">
+              {description ||
+                "Open to software engineering opportunities, enterprise collaborations, and meaningful tech discussions."}
             </p>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
+              {/* Email with copy button */}
+              <div className="flex items-center justify-between p-5 bg-card/60 dark:bg-zinc-900/40 rounded-2xl border border-border/80 dark:border-white/10 hover:border-primary/50 transition-all shadow-xs group">
+                <a
+                  href={`mailto:${email}`}
+                  className="flex items-center gap-4 flex-1 overflow-hidden"
+                >
+                  <div className="p-3 bg-secondary rounded-xl text-primary border border-border/60">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div className="truncate">
+                    <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Email</p>
+                    <p className="text-sm sm:text-base font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                      {email}
+                    </p>
+                  </div>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="p-2.5 rounded-xl hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors cursor-pointer ml-2 border border-border/60"
+                  title="Copy email to clipboard"
+                >
+                  {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
+
+              {/* LinkedIn */}
               <a
-                href={`mailto:${email}`}
-                className="flex items-center gap-4 p-5 bg-card rounded-xl border border-border/60 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 group animate-fade-in-up"
+                href={linkedInLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-5 bg-card/60 dark:bg-zinc-900/40 rounded-2xl border border-border/80 dark:border-white/10 hover:border-primary/50 transition-all shadow-xs group"
               >
-                <div className="p-3 bg-gradient-to-br from-primary/25 to-accent/25 rounded-lg group-hover:from-primary/35 group-hover:to-accent/35 transition-all transform group-hover:scale-110">
-                  <Mail className="w-6 h-6 text-primary" />
+                <div className="p-3 bg-secondary rounded-xl text-primary border border-border/60">
+                  <Linkedin className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-foreground/60 uppercase tracking-wider font-semibold">Email</p>
-                  <p className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{email}</p>
+                  <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">LinkedIn</p>
+                  <p className="text-sm sm:text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                    {portfolio.personal.name}
+                  </p>
                 </div>
               </a>
 
+              {/* GitHub */}
               <a
-                href={links[1].url}
+                href={githubLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-5 bg-card rounded-xl border border-border/60 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 group animate-fade-in-up"
-                style={{ animationDelay: '0.1s' }}
+                className="flex items-center gap-4 p-5 bg-card/60 dark:bg-zinc-900/40 rounded-2xl border border-border/80 dark:border-white/10 hover:border-primary/50 transition-all shadow-xs group"
               >
-                <div className="p-3 bg-gradient-to-br from-blue-500/25 to-cyan-500/25 rounded-lg group-hover:from-blue-500/35 group-hover:to-cyan-500/35 transition-all transform group-hover:scale-110">
-                  <Linkedin className="w-6 h-6 text-blue-600" />
+                <div className="p-3 bg-secondary rounded-xl text-primary border border-border/60">
+                  <Github className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-foreground/60 uppercase tracking-wider font-semibold">LinkedIn</p>
-                  <p className="text-lg font-bold text-foreground group-hover:text-blue-600 transition-colors">Mohd Abdullah</p>
-                </div>
-              </a>
-
-              <a
-                href={links[2].url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 p-5 bg-card rounded-xl border border-border/60 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 group animate-fade-in-up"
-                style={{ animationDelay: '0.2s' }}
-              >
-                <div className="p-3 bg-gradient-to-br from-slate-500/25 to-slate-700/25 rounded-lg group-hover:from-slate-500/35 group-hover:to-slate-700/35 transition-all transform group-hover:scale-110">
-                  <Github className="w-6 h-6 text-slate-700 dark:text-slate-300" />
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/60 uppercase tracking-wider font-semibold">GitHub</p>
-                  <p className="text-lg font-bold text-foreground group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">Mohd Abdullah</p>
+                  <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">GitHub</p>
+                  <p className="text-sm sm:text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                    {portfolio.personal.name}
+                  </p>
                 </div>
               </a>
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 p-8 rounded-xl border border-primary/30 hover:border-primary/50 transition-all duration-300 hover:shadow-lg animate-fade-in-right">
-            <h3 className="text-2xl font-bold mb-6 text-foreground">Quick Facts</h3>
+          {/* Quick Facts Card */}
+          <div className="p-7 sm:p-8 rounded-2xl border border-border/80 dark:border-white/10 bg-card/60 dark:bg-zinc-900/40 backdrop-blur-md shadow-xs space-y-6">
+            <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+              System &amp; Availability Facts
+            </h3>
 
-            <div className="space-y-6">
-              <div className="pb-5 border-b border-border/30">
-                <p className="text-xs text-foreground/60 uppercase tracking-widest font-bold mb-2">Location</p>
-                <p className="text-lg font-bold text-foreground">Kolkata, India</p>
-              </div>
-
-              <div className="pb-5 border-b border-border/30">
-                <p className="text-xs text-foreground/60 uppercase tracking-widest font-bold mb-2">Current Role</p>
-                <p className="text-lg font-bold text-primary">Full Stack Developer @ Baar Technologies</p>
-              </div>
-
-              <div className="pb-5 border-b border-border/30">
-                <p className="text-xs text-foreground/60 uppercase tracking-widest font-bold mb-2">Availability</p>
-                <p className="text-lg font-bold text-accent">Open to freelance & collaboration</p>
-              </div>
-
-              <div>
-                <p className="text-xs text-foreground/60 uppercase tracking-widest font-bold mb-2">Timezone</p>
-                <p className="text-lg font-bold text-foreground">IST (Indian Standard Time)</p>
-              </div>
+            <div className="space-y-4">
+              {(quickFacts && quickFacts.length > 0
+                ? quickFacts
+                : [
+                    { label: 'Location', value: portfolio.personal.location },
+                    { label: 'Current Role', value: `${portfolio.personal.title} @ ${portfolio.personal.company}`, highlight: true },
+                    { label: 'Availability', value: 'Open to freelance & engineering roles' },
+                    { label: 'Timezone', value: 'IST (Indian Standard Time)' },
+                  ]
+              ).map((fact, idx) => (
+                <div key={idx} className="pb-3.5 border-b border-border/50 dark:border-white/5 last:border-0 last:pb-0">
+                  <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-bold mb-1">{fact.label}</p>
+                  <p className={`text-sm sm:text-base font-bold ${fact.highlight ? 'text-primary' : 'text-foreground'}`}>
+                    {fact.value}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

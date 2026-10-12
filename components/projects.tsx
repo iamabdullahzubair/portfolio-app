@@ -1,168 +1,135 @@
 'use client';
 
 import Link from 'next/link';
-import { ExternalLink, Github, Star, Clock, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
-import { portfolioConfig } from '@/lib/portfolio-config';
+import { ExternalLink, Github, Star, Clock, CheckCircle2, ArrowRight, Layers, Sparkles } from 'lucide-react';
+import { usePortfolio } from '@/lib/portfolio-context';
 
 export default function Projects() {
-  const projects = portfolioConfig.projects;
+  const portfolio = usePortfolio();
+  const projects = portfolio.projects;
 
-  const getStatusColor = (status: string) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'Featured':
-        return 'bg-accent/20 text-accent border-accent/30';
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+            <Star className="w-3 h-3" /> Featured
+          </span>
+        );
       case 'In Progress':
-        return 'bg-primary/20 text-primary border-primary/30';
-      case 'Completed':
-        return 'bg-green-500/20 text-green-600 border-green-500/30';
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+            <Clock className="w-3 h-3" /> In Progress
+          </span>
+        );
       default:
-        return 'bg-foreground/10 text-foreground border-foreground/20';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'Featured':
-        return <Star size={12} className="inline mr-1" />;
-      case 'In Progress':
-        return <Clock size={12} className="inline mr-1" />;
-      case 'Completed':
-        return <CheckCircle size={12} className="inline mr-1" />;
-      default:
-        return null;
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary text-foreground/80 border border-border/80">
+            <CheckCircle2 className="w-3 h-3" /> Completed
+          </span>
+        );
     }
   };
 
   return (
-    <section id="projects" className="py-20 px-6 bg-background">
+    <section id="projects" className="py-24 px-6 bg-background relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 flex items-center gap-4">
-          <span className="w-12 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></span>
-          Projects
-        </h2>
-        <p className="text-lg text-foreground/60 mb-12">
-          Some of my work and real-world applications I&apos;ve built
-        </p>
+        <div className="mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-secondary border border-border/80 text-muted-foreground mb-4">
+            <Layers className="w-3.5 h-3.5 text-primary" />
+            Selected Work
+          </div>
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground">
+            Featured Projects
+          </h2>
+          <p className="text-sm md:text-base text-muted-foreground mt-2 max-w-xl">
+            A showcase of production-ready web apps, scalable backend systems, and microservices architecture.
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {projects.map((project, idx) => (
             <div
-              key={project.id}
-              className="group bg-card rounded-2xl border border-border/60 hover:border-primary/60 hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col backdrop-blur-sm animate-fade-in-up"
-              style={{ animationDelay: `${idx * 0.1}s` }}
+              key={project.id || idx}
+              className="group rounded-2xl border border-border/70 dark:border-white/10 bg-card/60 dark:bg-zinc-900/40 backdrop-blur-md p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:border-primary/50 dark:hover:border-white/30 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-white/5"
             >
-              {/* Top Accent Bar */}
-              <div className="h-1.5 bg-gradient-to-r from-primary via-accent to-primary opacity-60 group-hover:opacity-100 transition-opacity"></div>
-
-              {/* Card Content */}
-              <div className="p-6">
-                {/* Header Section */}
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors flex-1">
+              <div>
+                {/* Header */}
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <h3 className="text-xl sm:text-2xl font-bold text-foreground group-hover:text-primary transition-colors tracking-tight">
                     {project.title}
                   </h3>
-                  <span
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border whitespace-nowrap flex-shrink-0 ${getStatusColor(
-                      project.status
-                    )}`}
-                  >
-                    {getStatusIcon(project.status)}
-                    {project.status}
-                  </span>
+                  {getStatusBadge(project.status)}
                 </div>
-                
-                <p className="text-foreground/65 text-sm leading-relaxed mb-4">
+
+                {/* Description */}
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6">
                   {project.description}
                 </p>
 
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-4">
+                {/* Tech Stack Chips */}
+                <div className="flex flex-wrap gap-2 mb-6">
                   {project.techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2.5 py-1 bg-gradient-to-br from-primary/15 to-accent/15 text-primary text-xs font-medium rounded-lg border border-primary/20"
+                      className="px-2.5 py-1 text-xs font-medium rounded-lg bg-secondary text-secondary-foreground border border-border/60"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
 
-                {/* Key Features - Compact */}
-                {project.keyFeatures && (
-                  <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Sparkles size={14} className="text-primary" />
-                      <h4 className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">Key Features</h4>
-                    </div>
-                    <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                      {project.keyFeatures.slice(0, 4).map((feature, i) => (
-                        <div key={i} className="flex items-center gap-1.5">
-                          <div className="w-1 h-1 rounded-full bg-primary/60"></div>
-                          <span className="text-xs text-foreground/60">{feature}</span>
-                        </div>
+                {/* Key Features Preview */}
+                {project.keyFeatures && project.keyFeatures.length > 0 && (
+                  <div className="mb-6 space-y-2 bg-secondary/30 dark:bg-zinc-950/40 p-4 rounded-xl border border-border/40 dark:border-white/5">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                      <Sparkles className="w-3 h-3 text-primary" /> Key Capabilities
+                    </p>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-foreground/80">
+                      {project.keyFeatures.slice(0, 4).map((feat, fIdx) => (
+                        <li key={fIdx} className="flex items-center gap-1.5 truncate">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary/70 shrink-0" />
+                          <span className="truncate">{feat}</span>
+                        </li>
                       ))}
-                      {project.keyFeatures.length > 4 && (
-                        <div className="text-xs text-primary/70 font-medium">
-                          +{project.keyFeatures.length - 4} more features
-                        </div>
-                      )}
-                    </div>
+                    </ul>
                   </div>
                 )}
+              </div>
 
-                {/* Engineering Highlights - Compact */}
-                {project.engineeringHighlights && (
-                  <div className="mb-5 p-3 bg-primary/5 rounded-xl border border-primary/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-1 h-4 bg-gradient-to-b from-primary to-accent rounded-full"></div>
-                      <h4 className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">Technical Highlights</h4>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.engineeringHighlights.slice(0, 3).map((highlight, i) => (
-                        <span key={i} className="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-md">
-                          {highlight}
-                        </span>
-                      ))}
-                      {project.engineeringHighlights.length > 3 && (
-                        <span className="text-xs px-2 py-0.5 bg-foreground/10 text-foreground/60 rounded-md">
-                          +{project.engineeringHighlights.length - 3}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
+              {/* Action Buttons */}
+              <div className="pt-4 border-t border-border/60 dark:border-white/10 flex flex-wrap items-center justify-between gap-3">
+                <Link
+                  href={`/projects/${project.id}`}
+                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-foreground hover:text-primary transition-colors group/link cursor-pointer"
+                >
+                  <span>Explore Case Study</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
+                </Link>
 
-                {/* Action Buttons */}
-                <div className="flex gap-3">
-                  {project.links.demo && project.links.demo !== '#' && (
-                    <a
-                      href={project.links.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-accent/15 text-accent border border-accent/40 rounded-xl hover:bg-accent/25 hover:border-accent/60 hover:scale-105 transition-all text-sm font-semibold"
-                    >
-                      <ExternalLink size={16} />
-                      Live Demo
-                    </a>
-                  )}
-                  
-                  {project.links.github && project.links.github !== '#' && (
+                <div className="flex items-center gap-2">
+                  {project.links?.github && project.links.github !== '#' && (
                     <a
                       href={project.links.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-primary/15 text-primary border border-primary/40 rounded-xl hover:bg-primary/25 hover:border-primary/60 hover:scale-105 transition-all text-sm font-semibold ${!project.links.demo || project.links.demo === '#' ? 'w-full' : ''}`}
+                      className="p-2 rounded-xl border border-border/70 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all"
+                      title="View GitHub repository"
                     >
-                      <Github size={16} />
-                      Source Code
+                      <Github className="w-4 h-4" />
                     </a>
                   )}
 
-                  {(!project.links.demo || project.links.demo === '#') && 
-                   (!project.links.github || project.links.github === '#') && (
-                    <div className="flex-1 text-center px-4 py-2.5 bg-foreground/5 text-foreground/40 rounded-xl text-sm font-medium">
-                      Private Repository
-                    </div>
+                  {project.links?.demo && project.links.demo !== '#' && (
+                    <a
+                      href={project.links.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-xl border border-border/70 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all"
+                      title="View Live Demo"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
                   )}
                 </div>
               </div>

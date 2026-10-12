@@ -1,9 +1,13 @@
 {
   "name": "Mohd Abdullah - Portfolio",
-  "short_name": "Abdullah",
-  "description": "Mohd Abdullah's portfolio showcasing my work and skills.",
+  "short_name": "Mohd Abdullah",
+  "description": "Product Engineer portfolio showcasing enterprise IAM, backend systems, and modern web applications.",
   "icons": [
-    
+    {
+      "src": "/favicon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
@@ -17,22 +21,8 @@
       "purpose": "maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-mobile.png",
-      "sizes": "720x1280",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshot-desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
+  "theme_color": "#09090b",
+  "background_color": "#09090b",
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "/",

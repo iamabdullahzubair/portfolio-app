@@ -1,16 +1,76 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js build output & cache
+/.next/
+/out/
+/build/
+/dist/
+.turbo/
+
+# TypeScript compiler cache & build info
+*.tsbuildinfo
+next-env.d.ts.bak
+
+# Environment variables & secrets
+.env*.local
+.env
+.env.production
+.env.staging
+.env.test
+!.env.example
+
+# Vercel deployment metadata
+.vercel/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing & code coverage
+/coverage/
+*.lcov
+.nyc_output/
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE & Editor settings
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary and backup files
+*.bak
+*.tmp
+*.temp
+
 # v0 sandbox internal files
 __v0_runtime_loader.js
 __v0_devtools.tsx
 __v0_jsx-dev-runtime.ts
 .snowflake/
 .v0-trash/
-.vercel/
-next.user-config.*
-
-# Environment variables
-.env*.local
-
-# Common ignores
-node_modules
-.next/
-.DS_Store
+next.user-config.*

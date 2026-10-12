@@ -7,27 +7,33 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Mohd Abdullah | Full Stack Developer',
-  description: 'Full Stack Developer at Baar Technologies. Specialized in Node.js, React, Express, and modern web technologies. BTech in CSE from Om Dyal Group of Institute.',
-  generator: 'v0.app',
+  title: 'Mohd Abdullah | Product Engineer',
+  description: 'Product Engineer at Baar Technologies. Specialized in Node.js, React, Express, system design, and modern web technologies.',
+  manifest: '/site.webmanifest',
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: '/favicon.ico',
+        sizes: 'any',
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/favicon-48x48.png',
+        sizes: '48x48',
+        type: 'image/png',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: [
+      {
+        url: '/apple-touch-icon.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
   },
 }
+
+import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 
 export default function RootLayout({
   children,
@@ -35,11 +41,20 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth bg-background">
-      <body className="font-sans antialiased bg-background text-foreground">
-        {children}
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body className="font-sans antialiased bg-background text-foreground transition-colors duration-300">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          {children}
+          <Toaster position="top-right" richColors />
+        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
 }
+
