@@ -9,7 +9,7 @@
     "lint": "eslint ."
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": "24.x"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
